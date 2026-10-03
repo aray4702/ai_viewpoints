@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     extract_effort: str = "medium"  # low | medium | high
 
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.8-flash"
 
     voyage_api_key: str = ""
     embedding_model: str = "voyage-3"

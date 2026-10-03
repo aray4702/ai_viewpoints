@@ -138,7 +138,7 @@ All settings are read from `backend/.env` (template: `backend/.env.example`). Ma
 | `VOYAGE_API_KEY` | — | Dedup and meaning-based search (optional) |
 | `TRIAGE_MODEL` / `EXTRACT_MODEL` | `claude-haiku-4-5` / `claude-sonnet-5-5` | Models |
 | `EXTRACT_EFFORT` | `medium` | Extraction effort: `low`, `medium`, `high` |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Transcription model |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | Transcription model |
 | `DEDUP_SIMILARITY` / `DEDUP_WINDOW_DAYS` | `0.90` / `90` | Repeat detection |
 | `QUOTE_MATCH_THRESHOLD` | `90` | Fuzzy quote match score (0–100) |
 | `SECRET_KEY` | placeholder | Signs sessions; **must** be set in production |
@@ -176,9 +176,24 @@ items and read the results.
 | 4. API + web | REST API, website, search, sign-in, admin | Done |
 | 5. Subscriptions | Filter language, matching, Discord bot, email digests, RSS | Next |
 | 6. Reddit + X | Two more adapters (X behind a swappable provider, due to API cost) | Planned |
-| 7. Hardening | Rate limits, monitoring, CI, re-running extraction from admin | Planned |
+| 7. Hardening | Rate limits, monitoring, CI, re-running extraction from admin, speaker checks on video clips with fuzzy name matching (see known limitations) | Planned |
 
 ## Known limitations
+
+- **Speaker credit on YouTube videos with several speakers (postponed).** YouTube captions have
+  no speaker labels, so Claude infers who said what from context. Tested 2026-10-03:
+  - One-guest interview (Noam Brown): 3 of 3 credited correctly.
+  - Two-guest episode (Alex Imas and Phil Trammell): 2 of 3; one of Imas's views was credited
+    to Trammell.
+  - Gemini watching the whole video credited 3 of 3 correctly, but at about 5x the cost (~$0.35
+    vs ~$0.06 per 80-minute episode), and 2 of its 3 "verbatim" quotes were paraphrased.
+  - **Planned fix:** keep captions → Claude for extraction, then have Gemini identify the
+    speaker on a ~60-second clip around each quote (about $0.015 per episode).
+- **Speaker check rejects misspelled names (postponed, same fix).** Captions spell names as
+  heard (e.g. "Sax" for Sacks, "Freeberg" for Friedberg). The exact-surname check in
+  `pipeline/speakers.py` then discards every viewpoint from those speakers, so All-In co-hosts
+  are lost. **Planned fix:** fuzzy surname matching, and also accepting names listed in the
+  tracked person's bio.
 
 - **Same episode, two platforms.** An episode published on both YouTube and Substack is
   extracted twice. Repeated viewpoints are caught by dedup, but the LLM cost is paid twice.
