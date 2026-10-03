@@ -56,8 +56,15 @@ Rules:
 - Skip facts, anecdotes, and pleasantries with no stance. Returning fewer than {MAX_VIEWPOINTS},
   or none at all, is better than padding with weak viewpoints.
 - Merge repeated statements of the same view into one viewpoint.
-- verbatim_quote must be copied exactly from the source text. It is checked by string matching,
-  and viewpoints whose quote can't be found are discarded. Keep it under 60 words.
+- verbatim_quote must be copied exactly from the source text, in the source's own language. Never
+  translate it. It is checked by string matching, and viewpoints whose quote can't be found are
+  discarded. Keep it under 60 words (or 120 characters for Chinese, Japanese, or Korean).
+- Language: write claim, summary, topics, and entities in English, whatever the source language.
+  When the quote is not in English, put an English translation in quote_translation; otherwise
+  leave quote_translation null.
+- Speaker names: credit the tracked person with their name exactly as given after "Tracked
+  person". For anyone else, write the name as it appears in the content. For a name written in Chinese
+  characters, use the characters (e.g. "徐梦迪"), not a romanization.
 - The claim must stand alone: name the subject explicitly instead of using "it" or "this".
 - State the claim directly as the view itself, not as reported speech: write "Reward hacking will
   get worse as RL scales", not "Brown argues that reward hacking will get worse".

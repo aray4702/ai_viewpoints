@@ -12,7 +12,7 @@ from google.genai import types
 from app.core.config import get_settings
 from app.pipeline.transcribe.base import Transcript, TranscriptUnavailable
 
-PROMPT = """Transcribe this {kind} in English.
+PROMPT = """Transcribe this {kind} verbatim in the language it is spoken in. Do not translate.
 Format: one paragraph roughly every 30 seconds, each starting with a timestamp like [mm:ss] or [h:mm:ss].
 Prefix each paragraph with the speaker's name if identifiable (e.g. "[12:30] Andrej Karpathy: ...").
 {visual}Output only the transcript."""

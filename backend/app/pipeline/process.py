@@ -83,6 +83,7 @@ def process_item(db: Session, item: MediaItem) -> list[Viewpoint]:
             claim=ev.claim,
             summary=ev.summary,
             quote=ev.verbatim_quote,
+            quote_translation=ev.quote_translation,
             quote_timestamp=parse_ts(ev.timestamp) if ev.timestamp else None,
             stance=ev.stance,
             confidence=max(0.0, min(1.0, ev.confidence)),

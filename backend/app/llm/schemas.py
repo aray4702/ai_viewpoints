@@ -21,11 +21,15 @@ class ExtractedViewpoint(BaseModel):
         description="One-line description of the speaker from the content; null for the tracked "
         "person."
     )
-    claim: str = Field(description="The viewpoint as one crisp, self-contained sentence.")
-    summary: str = Field(description="2-4 sentences: the argument, reasoning, and context.")
+    claim: str = Field(description="The viewpoint as one crisp, self-contained English sentence.")
+    summary: str = Field(description="2-4 English sentences: the argument, reasoning, and context.")
     verbatim_quote: str = Field(
-        description="An exact, contiguous excerpt from the source text supporting the claim. "
-        "Copy it character-for-character; do not paraphrase or stitch fragments."
+        description="An exact, contiguous excerpt from the source text supporting the claim, in "
+        "the source's language. Copy it character-for-character; do not translate, paraphrase, "
+        "or stitch fragments."
+    )
+    quote_translation: str | None = Field(
+        description="English translation of verbatim_quote when the source isn't English, else null."
     )
     timestamp: str | None = Field(
         description="For transcripts, the [mm:ss] or [h:mm:ss] marker of the paragraph containing "

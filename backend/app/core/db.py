@@ -63,9 +63,7 @@ def vec_table_def(dim: int) -> str:
 def create_virtual_tables(conn, dim: int) -> None:
     """sqlite-vec and FTS5 tables aren't expressible as ORM models; create them here."""
     conn.execute(
-        text(
-            f"CREATE VIRTUAL TABLE IF NOT EXISTS viewpoint_vec USING {vec_table_def(dim)}"
-        )
+        text(f"CREATE VIRTUAL TABLE IF NOT EXISTS viewpoint_vec USING {vec_table_def(dim)}")
     )
     conn.execute(
         text(

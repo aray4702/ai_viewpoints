@@ -6,6 +6,8 @@ from rapidfuzz import fuzz
 
 _TS = re.compile(r"\[\d{1,2}:\d{2}(?::\d{2})?\]")
 _SPEAKER = re.compile(r"(?m)^\s*[A-Z][\w.'\- ]{0,40}:\s")
+# Chinese, Japanese, Korean: written without spaces between words
+CJK = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uac00-\ud7af]")
 
 
 def normalize(text: str) -> str:
@@ -20,6 +22,9 @@ def quote_in_source(quote: str, source: str, threshold: float) -> bool:
     q, src = normalize(quote), normalize(_SPEAKER.sub(" ", source))
     if not q:
         return False
+    if CJK.search(q):
+        # captions split CJK text into spaced segments that a quote won't reproduce
+        q, src = q.replace(" ", ""), src.replace(" ", "")
     if q in src:
         return True
     # tolerate transcript noise and quotes spanning a timestamp/speaker boundary

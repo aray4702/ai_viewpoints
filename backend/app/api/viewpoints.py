@@ -37,6 +37,7 @@ def to_out(v: Viewpoint) -> ViewpointOut:
         claim=v.claim,
         summary=v.summary,
         quote=v.quote,
+        quote_translation=v.quote_translation,
         quote_timestamp=v.quote_timestamp,
         quote_url=quote_url(v),
         stance=v.stance,

@@ -8,7 +8,11 @@ from app.models import Tag, TagKind
 
 
 def slugify(name: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+    ascii_slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+    if ascii_slug:
+        return ascii_slug
+    # names with no Latin letters or digits (e.g. "徐梦迪") keep their own characters
+    return re.sub(r"[\W_]+", "-", name.lower()).strip("-")
 
 
 def resolve_tags(
@@ -21,8 +25,10 @@ def resolve_tags(
     for t in topics:
         if slug := slugify(t):
             wanted[(TagKind.topic, slug)] = t.strip().lower()
+    ticker_slugs = {re.sub(r"[^A-Z0-9.]", "", t.upper()).lower() for t in tickers}
     for e in entities:
-        if slug := slugify(e):
+        # "QQQ" as both entity and ticker would show twice on the card
+        if (slug := slugify(e)) and slug not in ticker_slugs:
             wanted[(TagKind.entity, slug)] = e.strip()
     for t in tickers:
         if sym := re.sub(r"[^A-Z0-9.]", "", t.upper()):

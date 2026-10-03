@@ -38,6 +38,7 @@ export interface Viewpoint {
   claim: string;
   summary: string;
   quote: string;
+  quote_translation: string | null;
   quote_timestamp: number | null;
   quote_url: string;
   stance: string | null;

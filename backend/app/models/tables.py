@@ -140,6 +140,7 @@ class Viewpoint(Base):
     claim: Mapped[str] = mapped_column(Text)
     summary: Mapped[str] = mapped_column(Text)
     quote: Mapped[str] = mapped_column(Text)
+    quote_translation: Mapped[str | None] = mapped_column(Text)  # English, for non-English quotes
     quote_timestamp: Mapped[int | None] = mapped_column(Integer)  # seconds into audio/video
     stance: Mapped[str | None] = mapped_column(String(50))  # bullish/bearish/positive/negative/...
     confidence: Mapped[float] = mapped_column(Float, default=0.5)

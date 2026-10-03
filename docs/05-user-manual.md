@@ -16,7 +16,8 @@ The home page lists the newest viewpoints first. Each card shows:
   or blog, the card says so, e.g. *Noam Brown · Blog via Dwarkesh Patel*.
 - **The claim**: the viewpoint in one sentence. Click it for the viewpoint's own page.
 - **A short summary** of the reasoning.
-- **The exact quote**, with a link to the source. For YouTube, the link jumps to the moment the
+- **The exact quote**, with a link to the source. Quotes from non-English sources are shown in
+  the original language with an English translation underneath. For YouTube, the link jumps to the moment the
   quote is spoken.
 - **Tags**: domains (highlighted), topics, companies and people mentioned, and stock tickers
   (shown with `$`).
@@ -85,6 +86,8 @@ fine at 360 (6 hours) or more.
 
 Tips:
 
+- **Other languages:** channels in Chinese and other languages work. Viewpoints appear in
+  English, with the original quote and an English translation.
 - **Substack:** add `/feed` to the publication's URL.
 - **Finding a feed:** many sites link one as "RSS". For podcasts, the feed URL is listed on the
   show's page in most podcast directories.

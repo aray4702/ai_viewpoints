@@ -87,6 +87,23 @@ knowing:
 - Transient Claude errors (rate limits, connection, server errors) are retried by the job queue
   up to 3 times; any other error marks the item `failed` with the error text.
 
+### Non-English sources
+
+Chinese (and other non-English) channels are supported:
+
+- **Captions:** `pick_track()` in `transcribe/captions.py` picks the caption track in the
+  video's own language. Human-made beats auto-generated; the speech-recognition track reveals
+  the spoken language.
+- **Gemini:** transcribes in the spoken language and never translates.
+- **Extraction:** the claim, summary, topics, and entities are written in English. The quote
+  stays word-for-word in the original language, with an English `quote_translation` shown
+  under it on the site.
+- **Quote check:** for Chinese, Japanese, and Korean, spacing is ignored, because captions
+  break the text into spaced segments.
+- **Names:** Chinese names keep their characters, both for the speaker check and for the
+  person's page address (e.g. `/people/徐梦迪`). A bilingual tracked name such as
+  "视野环球财经 (Rhino Finance)" matches either part.
+
 ### Extraction prompt (`llm/prompts.py`)
 
 The prompt is the main quality lever. It defines novel / useful / practical, caps output at
@@ -195,6 +212,8 @@ items and read the results.
   are lost. **Planned fix:** fuzzy surname matching, and also accepting names listed in the
   tracked person's bio.
 
+- **YouTube channels with captions turned off** (e.g. RhinoFinance) always go through Gemini, at
+  roughly $0.15 per 20-minute video instead of about $0.03.
 - **Same episode, two platforms.** An episode published on both YouTube and Substack is
   extracted twice. Repeated viewpoints are caught by dedup, but the LLM cost is paid twice.
 - **Name collisions.** Two different people with the same name would be merged into one person.

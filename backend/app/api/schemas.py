@@ -54,6 +54,7 @@ class ViewpointOut(BaseModel):
     claim: str
     summary: str
     quote: str
+    quote_translation: str | None  # English, when the quote isn't
     quote_timestamp: int | None
     quote_url: str  # source link, deep-linked to the timestamp when possible
     stance: str | None

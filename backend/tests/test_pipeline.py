@@ -23,6 +23,7 @@ def vp(quote, **kw):
     base = {
         "speaker": "Andrej Karpathy",
         "speaker_bio": None,
+        "quote_translation": None,
         "claim": "Reliability, not intelligence, is the main bottleneck for LLM agents.",
         "summary": "s",
         "verbatim_quote": quote,
@@ -83,7 +84,7 @@ def test_timestamps_roundtrip():
 
 def test_resolve_tags_normalizes_and_dedups(db):
     tags = resolve_tags(
-        db, ["AI", "bogus"], ["AI Agents", "ai-agents"], ["OpenAI"], ["nvda", "$NVDA"]
+        db, ["AI", "bogus"], ["AI Agents", "ai-agents"], ["OpenAI", "NVDA"], ["nvda", "$NVDA"]
     )
     kinds = sorted((t.kind.value, t.slug) for t in tags)
     assert kinds == [
@@ -329,3 +330,78 @@ def test_due_sources_skips_platforms_without_adapter(db, person_source):
     db.add(x)
     db.flush()
     assert x not in poll_mod.due_sources(db)
+
+
+class Track:
+    def __init__(self, code, generated):
+        self.language_code, self.is_generated = code, generated
+
+
+def test_pick_track_prefers_original_language():
+    from app.pipeline.transcribe.captions import pick_track
+
+    def pick(*tracks):
+        t = pick_track(list(tracks))
+        return (t.language_code, t.is_generated)
+
+    # human-made Chinese beats an auto-generated English track
+    assert pick(Track("zh-Hans", False), Track("en", True)) == ("zh-Hans", False)
+    # only speech recognition: use it
+    assert pick(Track("zh", True)) == ("zh", True)
+    # two human tracks: the one matching the spoken language (from the generated track) wins
+    assert pick(Track("en", False), Track("zh-Hans", False), Track("zh", True)) == (
+        "zh-Hans",
+        False,
+    )
+    # auto-dubbed (many generated tracks, original unknown): English, then Chinese
+    assert pick(Track("fr", True), Track("zh", True), Track("en", True)) == ("en", True)
+    assert pick_track([]) is None
+
+
+def test_chinese_quote_matching_ignores_caption_spacing():
+    captions = "[00:00] 都在讲通胀， 但债市交易的 不是通胀\n[00:30] 而是 增长预期的变化"
+    assert quote_in_source("都在讲通胀，但债市交易的不是通胀", captions, 90)
+    assert quote_in_source("债市交易的不是通胀，而是增长预期的变化", captions, 90)
+    assert not quote_in_source("美联储下个月一定会降息", captions, 90)
+
+
+# the guest's name only appears mid-sentence, with no word boundary around it
+CN_TALK = (
+    "[00:00] 大家好，今天分享清华徐梦迪老师的演讲。\n"
+    "[00:30] 我看到了Scaling Law的信号，具身智能的数据规模会在两年内增长十倍，"
+    "所以现在投资仿真数据平台比投资硬件更划算。\n" * 4
+)
+
+
+def test_chinese_speaker_credited_with_translation(db, fake_llm):
+    _, state = fake_llm
+    host = Person(name="Best Partners TV (最佳拍档)", slug="best-partners", domains=["ai"])
+    db.add(host)
+    db.flush()
+    src = Source(person_id=host.id, platform=Platform.blog, handle="https://example.com/cn")
+    db.add(src)
+    db.flush()
+    quote = "具身智能的数据规模会在两年内增长十倍，所以现在投资仿真数据平台比投资硬件更划算"
+    state["viewpoints"] = [
+        vp(
+            quote,
+            speaker="徐梦迪",
+            speaker_bio="Professor at Tsinghua University",
+            quote_translation="Embodied-AI data will grow tenfold in two years...",
+            claim="guest",
+        ),
+        vp("大家好，今天分享清华徐梦迪老师的演讲", speaker="最佳拍档", claim="host by alias"),
+        vp(quote, speaker="李飞飞", claim="invented speaker"),
+    ]
+    created = process_mod.process_item(db, make_item(db, src, raw=CN_TALK))
+
+    by_claim = {v.claim: v for v in created}
+    assert set(by_claim) == {"guest", "host by alias"}
+    guest = by_claim["guest"]
+    assert (guest.person.name, guest.person.slug, guest.person.auto_added) == (
+        "徐梦迪",
+        "徐梦迪",
+        True,
+    )
+    assert guest.quote_translation.startswith("Embodied-AI")
+    assert by_claim["host by alias"].person_id == host.id  # not a duplicate "guest"
