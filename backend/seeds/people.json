@@ -1,0 +1,158 @@
+[
+  {
+    "name": "Andrej Karpathy", "slug": "karpathy", "domains": ["ai"],
+    "bio": "AI researcher, founder of Eureka Labs, former Director of AI at Tesla.",
+    "sources": [
+      {"platform": "youtube", "handle": "@AndrejKarpathy", "poll_interval_min": 360},
+      {"platform": "blog", "handle": "https://karpathy.bearblog.dev/feed/", "poll_interval_min": 360},
+      {"platform": "blog", "handle": "https://karpathy.github.io/feed.xml", "poll_interval_min": 1440},
+      {"platform": "x", "handle": "karpathy", "poll_interval_min": 30}
+    ]
+  },
+  {
+    "name": "Andrew Ng", "slug": "andrew-ng", "domains": ["ai"],
+    "bio": "Founder of DeepLearning.AI, co-founder of Coursera.",
+    "sources": [
+      {"platform": "youtube", "handle": "@Deeplearningai", "poll_interval_min": 360},
+      {"platform": "x", "handle": "AndrewYNg", "poll_interval_min": 60}
+    ]
+  },
+  {
+    "name": "Yann LeCun", "slug": "yann-lecun", "domains": ["ai"],
+    "bio": "AI researcher, Turing Award laureate.",
+    "sources": [
+      {"platform": "arxiv", "handle": "au:\"Yann LeCun\"", "poll_interval_min": 1440},
+      {"platform": "x", "handle": "ylecun", "poll_interval_min": 60}
+    ]
+  },
+  {
+    "name": "Sam Altman", "slug": "sam-altman", "domains": ["ai", "business"],
+    "bio": "CEO of OpenAI.",
+    "sources": [
+      {"platform": "blog", "handle": "https://blog.samaltman.com/posts.atom", "poll_interval_min": 360},
+      {"platform": "x", "handle": "sama", "poll_interval_min": 30}
+    ]
+  },
+  {
+    "name": "Simon Willison", "slug": "simon-willison", "domains": ["ai", "technology"],
+    "bio": "Creator of Datasette, co-creator of Django; writes extensively about LLMs.",
+    "sources": [
+      {"platform": "blog", "handle": "https://simonwillison.net/atom/everything/", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Lex Fridman", "slug": "lex-fridman", "domains": ["ai", "technology"],
+    "bio": "Host of the Lex Fridman Podcast.",
+    "sources": [
+      {"platform": "podcast", "handle": "https://lexfridman.com/feed/podcast/", "poll_interval_min": 360},
+      {"platform": "youtube", "handle": "@lexfridman", "poll_interval_min": 360}
+    ]
+  },
+  {
+    "name": "Dwarkesh Patel", "slug": "dwarkesh-patel", "domains": ["ai", "technology"],
+    "bio": "Host of the Dwarkesh Podcast.",
+    "sources": [
+      {"platform": "youtube", "handle": "@DwarkeshPatel", "poll_interval_min": 360},
+      {"platform": "blog", "handle": "https://www.dwarkesh.com/feed", "poll_interval_min": 360}
+    ]
+  },
+  {
+    "name": "Ben Thompson", "slug": "ben-thompson", "domains": ["technology", "business"],
+    "bio": "Author of Stratechery.",
+    "sources": [
+      {"platform": "blog", "handle": "https://stratechery.com/feed/", "poll_interval_min": 180},
+      {"platform": "x", "handle": "benthompson", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Dylan Patel", "slug": "dylan-patel", "domains": ["semiconductors", "ai"],
+    "bio": "Chief analyst at SemiAnalysis.",
+    "sources": [
+      {"platform": "blog", "handle": "https://newsletter.semianalysis.com/feed", "poll_interval_min": 180},
+      {"platform": "x", "handle": "dylan522p", "poll_interval_min": 60}
+    ]
+  },
+  {
+    "name": "Jensen Huang", "slug": "jensen-huang", "domains": ["semiconductors", "ai", "business"],
+    "bio": "Founder and CEO of NVIDIA.",
+    "sources": [
+      {"platform": "youtube", "handle": "@NVIDIA", "poll_interval_min": 360}
+    ]
+  },
+  {
+    "name": "Ben Gilbert & David Rosenthal", "slug": "acquired", "domains": ["business", "investment"],
+    "bio": "Hosts of the Acquired podcast.",
+    "sources": [
+      {"platform": "podcast", "handle": "https://feeds.transistor.fm/acquired", "poll_interval_min": 720}
+    ]
+  },
+  {
+    "name": "Patrick O'Shaughnessy", "slug": "patrick-oshaughnessy", "domains": ["investment", "business"],
+    "bio": "Host of Invest Like the Best.",
+    "sources": [
+      {"platform": "youtube", "handle": "@joincolossus", "poll_interval_min": 720},
+      {"platform": "x", "handle": "patrick_oshag", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Howard Marks", "slug": "howard-marks", "domains": ["investment"],
+    "bio": "Co-founder of Oaktree Capital; known for his investor memos.",
+    "sources": [
+      {"platform": "youtube", "handle": "@OaktreeCapital", "poll_interval_min": 1440}
+    ]
+  },
+  {
+    "name": "Cathie Wood", "slug": "cathie-wood", "domains": ["investment", "technology"],
+    "bio": "Founder and CEO of ARK Invest.",
+    "sources": [
+      {"platform": "youtube", "handle": "@ARKInvest2015", "poll_interval_min": 720},
+      {"platform": "x", "handle": "CathieDWood", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Naval Ravikant", "slug": "naval", "domains": ["investment", "business"],
+    "bio": "Co-founder of AngelList.",
+    "sources": [
+      {"platform": "x", "handle": "naval", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Paul Graham", "slug": "paul-graham", "domains": ["business", "technology"],
+    "bio": "Co-founder of Y Combinator; essayist.",
+    "sources": [
+      {"platform": "x", "handle": "paulg", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Demis Hassabis", "slug": "demis-hassabis", "domains": ["ai"],
+    "bio": "CEO of Google DeepMind, Nobel laureate.",
+    "sources": [
+      {"platform": "youtube", "handle": "@googledeepmind", "poll_interval_min": 720},
+      {"platform": "x", "handle": "demishassabis", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "François Chollet", "slug": "francois-chollet", "domains": ["ai"],
+    "bio": "Creator of Keras and the ARC-AGI benchmark.",
+    "sources": [
+      {"platform": "arxiv", "handle": "au:\"Francois Chollet\"", "poll_interval_min": 1440},
+      {"platform": "x", "handle": "fchollet", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Chamath Palihapitiya", "slug": "chamath", "domains": ["investment", "technology", "politics"],
+    "bio": "Founder of Social Capital; co-host of the All-In podcast.",
+    "sources": [
+      {"platform": "youtube", "handle": "@allin", "poll_interval_min": 360},
+      {"platform": "x", "handle": "chamath", "poll_interval_min": 120}
+    ]
+  },
+  {
+    "name": "Ethan Mollick", "slug": "ethan-mollick", "domains": ["ai", "business"],
+    "bio": "Wharton professor; author of One Useful Thing.",
+    "sources": [
+      {"platform": "blog", "handle": "https://www.oneusefulthing.org/feed", "poll_interval_min": 360},
+      {"platform": "x", "handle": "emollick", "poll_interval_min": 120}
+    ]
+  }
+]
