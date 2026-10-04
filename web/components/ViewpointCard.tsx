@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { QuoteTranslation } from "@/components/QuoteTranslation";
 import type { Viewpoint } from "@/lib/types";
 import { EMPTY, feedHref, withFilter, type Filters } from "@/lib/url";
 
@@ -72,11 +73,7 @@ export function ViewpointCard({ v, filters = EMPTY }: { v: Viewpoint; filters?: 
 
       <blockquote className="mt-4 border-l-2 border-accent pl-4 text-[15px] italic leading-relaxed">
         “{v.quote}”
-        {v.quote_translation && (
-          <span className="mt-1 block not-italic text-muted">
-            <span className="sr-only">Translation: </span>“{v.quote_translation}”
-          </span>
-        )}
+        {v.quote_translation && <QuoteTranslation text={v.quote_translation} />}
         <a
           href={v.quote_url}
           target="_blank"
