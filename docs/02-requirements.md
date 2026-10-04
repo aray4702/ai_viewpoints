@@ -36,7 +36,7 @@ Status key: **Done** is built and tested; **Planned** is scheduled in a later ph
 | M5 | Credit each viewpoint to the person who holds it. Interview guests get credit for their own views; a host's questions are not viewpoints. | Done |
 | M6 | Add guests who aren't tracked yet as new people automatically, marked as auto-added. | Done |
 | M7 | Discard any viewpoint whose quote can't be found in the source, or whose speaker isn't named in it. | Done |
-| M8 | Tag each viewpoint by domain (fixed list), topic, entity, and stock ticker. | Done |
+| M8 | Tag each viewpoint by domain (fixed list), topic, entity, and stock ticker, without tagging a company twice (as name and ticker). | Done |
 | M9 | Detect when a person repeats a view they expressed in the last 90 days, and mark it as a repeat instead of new. | Done |
 
 ### Publishing and finding
@@ -48,6 +48,8 @@ Status key: **Done** is built and tested; **Planned** is scheduled in a later ph
 | P3 | Search by keywords and by meaning (hybrid search). | Done |
 | P4 | A page per person and per viewpoint. | Done |
 | P5 | Post new viewpoints to Discord channels. | Planned |
+| P6 | Non-English sources (e.g. Chinese channels) appear in English, with the original quote and an English translation on request. | Done |
+| P7 | Cards are scannable: claim and quote up front; the summary and translation on request; a clearly labelled source link that opens at the quote's timestamp. | Done |
 
 ### Subscriptions
 

@@ -69,7 +69,8 @@ flowchart TD
 6. **Credit speakers.** A speaker is matched to the tracked person, then to an existing person
    by name, and otherwise created as a new auto-added person with a bio taken from the content.
 7. **Tag.** Domains come from a fixed list of 17 (ai, semiconductors, stocks, …); topics,
-   entities, and tickers are open-ended and normalized to slugs.
+   entities, and tickers are open-ended and normalized to slugs. Each ticker comes with its
+   company name, and a company that has a ticker is tagged only by the ticker.
 8. **Dedup.** The claim is embedded and compared with the speaker's viewpoints from the last 90
    days. At cosine similarity 0.90 or above, it is stored as a repeat of the earlier viewpoint
    and hidden from the feed.
@@ -93,7 +94,7 @@ erDiagram
 | `people` | name, slug, bio, domains, `auto_added` (true for discovered guests) |
 | `sources` | person, platform, handle (feed URL, `@handle`, or query), poll interval, last polled, ETag |
 | `media_items` | source, platform + external id (unique), url, title, published date, transcript, status, error, LLM token usage |
-| `viewpoints` | media item, **person (the speaker)**, claim, summary, quote, timestamp, stance, confidence, novelty, repeat of |
+| `viewpoints` | media item, **person (the speaker)**, claim, summary, quote (original language), quote translation (English, for non-English quotes), timestamp, stance, confidence, novelty, repeat of |
 | `tags` | kind (domain / topic / entity / ticker), slug, name |
 | `viewpoint_vec` | sqlite-vec table: one 1024-dim embedding per viewpoint, partitioned by person so dedup only scans the speaker's own rows |
 | `viewpoint_fts` | FTS5 index over claim, summary, quote; kept in sync by triggers |
@@ -113,6 +114,8 @@ A viewpoint's **speaker** (`viewpoints.person`) can differ from the **source own
 | **Whole transcripts, no chunking** | A three-hour podcast fits in context. The model sees the whole conversation, which matters for picking the best 3 and for knowing who said what. |
 | **Structured output, not tool calls** | Guarantees schema-valid JSON on the current Sonnet model, which doesn't allow forcing a tool call. |
 | **Verify, don't trust** | Quotes and speaker names are checked against the source, which guards against invented quotes and people. |
+| **English claims, original-language quotes** | One language across the site, so takes from Chinese and English sources can be compared; the untranslated quote keeps every viewpoint verifiable against its source. |
+| **Claim first, details on demand** | Cards show the claim and quote; the summary and translation sit behind buttons so the feed stays scannable. |
 | **Cap at 3 per item** | Keeps quality high and the feed readable. Enforced both in the prompt and in code. |
 | **Signed-cookie sessions in FastAPI** | One auth system for email and Discord; no session table. The web server forwards `/api`, so cookies are first-party. |
 | **First poll limited to 14 days** | Adding a person with years of back catalog shouldn't trigger hundreds of paid extractions. |

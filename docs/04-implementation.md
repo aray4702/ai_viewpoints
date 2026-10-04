@@ -40,8 +40,10 @@ backend/
   tests/         pytest suite: sources, pipeline, API
 web/
   app/           pages: / (feed), /people, /people/[slug], /v/[id], /search, /login, /admin
-  components/    ViewpointCard, Feed, FilterBar, AdminPanel, SignOutButton
-  lib/           api.ts (server-side API client), types.ts, url.ts (filter URLs)
+  components/    ViewpointCard (server), ShowSummary and QuoteActions (client toggles),
+                 Feed, FilterBar, AdminPanel, SignOutButton, Logo
+  lib/           api.ts (server-side API client), types.ts, url.ts (filter URLs),
+                 styles.ts (shared class names; plain module so server components can import it)
 docs/            these documents
 ```
 
@@ -103,6 +105,22 @@ Chinese (and other non-English) channels are supported:
 - **Names:** Chinese names keep their characters, both for the speaker check and for the
   person's page address (e.g. `/people/徐梦迪`). A bilingual tracked name such as
   "视野环球财经 (Rhino Finance)" matches either part.
+
+### Tags (`pipeline/tags.py`)
+
+`resolve_tags()` normalizes every tag to a slug and stores one row per (kind, slug). Domains must
+come from the fixed list. Tickers arrive as (symbol, company) pairs. An entity is dropped when it
+names a company already covered by a ticker: exact match, or the same name with a suffix, so
+"Nvidia" matches "NVIDIA Corporation" and "Amazon" matches "Amazon.com".
+
+### Web cards (`web/components/ViewpointCard.tsx`)
+
+The card is a server component. Its two interactive parts are small client components:
+`ShowSummary` (the summary toggle) and `QuoteActions` (the source link row and the Translate
+toggle). The summary and translation text still travel with the page, so they open instantly
+without another request; they're just not rendered until asked for. Shared class names live in
+`lib/styles.ts`. Importing a plain value from a `"use client"` file into a server component gives
+the server a client reference, not the value.
 
 ### Extraction prompt (`llm/prompts.py`)
 
@@ -174,11 +192,17 @@ cd backend && uv run pytest && uv run ruff check app tests scripts
 cd web && npx tsc --noEmit && npm run lint
 ```
 
-The 31 backend tests use a temporary database, mocked HTTP feeds, and mocked LLM responses, so
-they need no keys or network. They cover the adapters, quote and speaker verification, guest
-crediting, tagging, deduplication (including that it only compares a person with themselves),
-polling idempotency, that no database lock is held during LLM calls, that token usage is saved, and every API endpoint including auth
-and admin checks.
+The 34 backend tests use a temporary database, mocked HTTP feeds, and mocked LLM responses, so
+they need no keys or network. They cover:
+
+- the adapters and caption-track choice (original language first)
+- quote and speaker verification, including Chinese text and names
+- guest crediting, including bilingual host names
+- tagging, including dropping company tags that duplicate a ticker
+- deduplication, including that it only compares a person with themselves
+- polling idempotency, and skipping platforms without an adapter
+- that no database lock is held during LLM calls, and that token usage is saved
+- every API endpoint, including auth and admin checks
 
 Extraction quality can only be judged against real content: run `scripts/run_once.py` on a few
 items and read the results.

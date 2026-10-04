@@ -15,9 +15,25 @@ def slugify(name: str) -> str:
     return re.sub(r"[\W_]+", "-", name.lower()).strip("-")
 
 
+def _symbol(s: str) -> str:
+    return re.sub(r"[^A-Z0-9.]", "", s.upper())
+
+
+def _same_company(entity: str, companies: set[str]) -> bool:
+    """'nvidia' matches 'nvidia' and 'nvidia-corporation'; 'amazon' matches 'amazon-com'."""
+    return any(
+        entity == c or c.startswith(entity + "-") or entity.startswith(c + "-") for c in companies
+    )
+
+
 def resolve_tags(
-    db: Session, domains: list[str], topics: list[str], entities: list[str], tickers: list[str]
+    db: Session,
+    domains: list[str],
+    topics: list[str],
+    entities: list[str],
+    tickers: list[tuple[str, str | None]],
 ) -> list[Tag]:
+    """tickers are (symbol, company name) pairs."""
     wanted: dict[tuple[TagKind, str], str] = {}
     for d in domains:
         if slugify(d) in DOMAINS:  # domains are a closed set
@@ -25,14 +41,17 @@ def resolve_tags(
     for t in topics:
         if slug := slugify(t):
             wanted[(TagKind.topic, slug)] = t.strip().lower()
-    ticker_slugs = {re.sub(r"[^A-Z0-9.]", "", t.upper()).lower() for t in tickers}
+    # a company with a ticker would otherwise show twice ("Tesla" and "$TSLA")
+    covered = {_symbol(sym).lower() for sym, _ in tickers}
+    companies = {slugify(c) for _, c in tickers if c and slugify(c)}
     for e in entities:
-        # "QQQ" as both entity and ticker would show twice on the card
-        if (slug := slugify(e)) and slug not in ticker_slugs:
-            wanted[(TagKind.entity, slug)] = e.strip()
-    for t in tickers:
-        if sym := re.sub(r"[^A-Z0-9.]", "", t.upper()):
-            wanted[(TagKind.ticker, sym.lower())] = sym
+        slug = slugify(e)
+        if not slug or slug in covered or _same_company(slug, companies):
+            continue
+        wanted[(TagKind.entity, slug)] = e.strip()
+    for sym, _ in tickers:
+        if s := _symbol(sym):
+            wanted[(TagKind.ticker, s.lower())] = s
 
     tags = []
     for (kind, slug), name in wanted.items():

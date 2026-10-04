@@ -62,6 +62,8 @@ Rules:
 - Language: write claim, summary, topics, and entities in English, whatever the source language.
   When the quote is not in English, put an English translation in quote_translation; otherwise
   leave quote_translation null.
+- Tags: a company or fund that has a ticker goes in tickers (with its name), not also in
+  entities.
 - Speaker names: credit the tracked person with their name exactly as given after "Tracked
   person". For anyone else, write the name as it appears in the content. For a name written in Chinese
   characters, use the characters (e.g. "徐梦迪"), not a romanization.

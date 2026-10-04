@@ -15,6 +15,11 @@ class TriageResult(BaseModel):
     reason: str
 
 
+class Ticker(BaseModel):
+    symbol: str = Field(description="Ticker symbol, uppercase, e.g. 'NVDA'.")
+    company: str = Field(description="The company or fund it belongs to, e.g. 'Nvidia'.")
+
+
 class ExtractedViewpoint(BaseModel):
     speaker: str = Field(description="Full name of the person who holds this viewpoint.")
     speaker_bio: str | None = Field(
@@ -40,7 +45,7 @@ class ExtractedViewpoint(BaseModel):
     domains: list[str] = Field(description="1-3 slugs from the domain list.")
     topics: list[str] = Field(description="1-5 short lowercase topic slugs, e.g. 'scaling-laws'.")
     entities: list[str] = Field(description="Companies, products, people, or orgs discussed.")
-    tickers: list[str] = Field(description="Stock tickers discussed, uppercase, e.g. 'NVDA'.")
+    tickers: list[Ticker] = Field(description="Stocks and funds discussed, by ticker.")
 
 
 class ExtractionResult(BaseModel):

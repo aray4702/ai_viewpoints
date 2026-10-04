@@ -88,7 +88,9 @@ def process_item(db: Session, item: MediaItem) -> list[Viewpoint]:
             stance=ev.stance,
             confidence=max(0.0, min(1.0, ev.confidence)),
             quote_verified=True,
-            tags=resolve_tags(db, ev.domains, ev.topics, ev.entities, ev.tickers),
+            tags=resolve_tags(
+                db, ev.domains, ev.topics, ev.entities, [(t.symbol, t.company) for t in ev.tickers]
+            ),
         )
         if vec is not None:
             neighbors = nearest_same_person(db, speaker.id, vec, k=1)

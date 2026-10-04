@@ -10,18 +10,28 @@
 
 ### The feed
 
-The home page lists the newest viewpoints first. Each card shows:
+The home page lists the newest viewpoints first. Each card has three layers, from quickest to
+read to easiest to verify:
 
-- **Who holds the view**, the platform, and the date. If the view came from someone else's show
-  or blog, the card says so, e.g. *Noam Brown · Blog via Dwarkesh Patel*.
-- **The claim**: the viewpoint in one sentence. Click it for the viewpoint's own page.
-- **A short summary** of the reasoning.
-- **The exact quote**, with a link to the source. Quotes from non-English sources are shown in
-  the original language with an English translation underneath. For YouTube, the link jumps to the moment the
-  quote is spoken.
-- **Tags**: domains (highlighted), topics, companies and people mentioned, and stock tickers
-  (shown with `$`).
-- **Stance**, when there is one: bullish, bearish, positive, negative, mixed, or prediction.
+1. **The claim**: the viewpoint in one sentence. Click it for the viewpoint's own page.
+2. **The summary**: two to four sentences on the reasoning behind it. It's hidden to keep the
+   feed scannable; click **Show summary** to read it, and **Hide summary** to collapse it.
+3. **The quote**: the speaker's exact words from the source. Under it:
+   - **The source link** says what it opens: **▶ Watch at 3:06** for videos (jumps to the
+     moment the quote is spoken), **▶ Listen at…** for podcasts, **Read the source ↗** for
+     posts, **Read the paper ↗** for papers. Hover over it to see the source's title.
+   - **Translate**, for quotes from non-English sources. These are shown in the original
+     language; the button reveals an English translation.
+
+Around these:
+
+- **At the top**: who holds the view, the platform, and the date. If the view came from someone
+  else's show or blog, the card says so, e.g. *Noam Brown · Blog via Dwarkesh Patel*.
+- **Stance**, at the top right when there is one: bullish, bearish, positive, negative, mixed,
+  or prediction.
+- **Tags** at the bottom: domains (highlighted), topics, people and organizations mentioned, and
+  stocks and funds by ticker (shown with `$`). A company with a ticker appears only as its
+  ticker, e.g. `$TSLA` rather than both "Tesla" and `$TSLA`.
 
 Click **Older →** at the bottom for the next page.
 
@@ -87,7 +97,7 @@ fine at 360 (6 hours) or more.
 Tips:
 
 - **Other languages:** channels in Chinese and other languages work. Viewpoints appear in
-  English, with the original quote and an English translation.
+  English, with the original quote and an English translation behind a Translate button.
 - **Substack:** add `/feed` to the publication's URL.
 - **Finding a feed:** many sites link one as "RSS". For podcasts, the feed URL is listed on the
   show's page in most podcast directories.

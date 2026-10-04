@@ -33,7 +33,7 @@ def vp(quote, **kw):
         "domains": ["ai", "not-a-domain"],
         "topics": ["AI Agents"],
         "entities": ["OpenAI"],
-        "tickers": ["nvda"],
+        "tickers": [{"symbol": "nvda", "company": "Nvidia"}],
     }
     return ExtractedViewpoint(**{**base, **kw})
 
@@ -84,17 +84,28 @@ def test_timestamps_roundtrip():
 
 def test_resolve_tags_normalizes_and_dedups(db):
     tags = resolve_tags(
-        db, ["AI", "bogus"], ["AI Agents", "ai-agents"], ["OpenAI", "NVDA"], ["nvda", "$NVDA"]
+        db,
+        ["AI", "bogus"],
+        ["AI Agents", "ai-agents"],
+        ["OpenAI", "NVDA", "Nvidia", "Tesla", "Amazon"],
+        [
+            ("nvda", "NVIDIA Corporation"),
+            ("$NVDA", None),
+            ("TSLA", "Tesla"),
+            ("AMZN", "Amazon.com"),
+        ],
     )
     kinds = sorted((t.kind.value, t.slug) for t in tags)
     assert kinds == [
         ("domain", "ai"),
-        ("entity", "openai"),
+        ("entity", "openai"),  # Nvidia, Tesla, Amazon dropped: their tickers cover them
+        ("ticker", "amzn"),
         ("ticker", "nvda"),
+        ("ticker", "tsla"),
         ("topic", "ai-agents"),
     ]
     resolve_tags(db, ["ai"], [], [], [])
-    assert db.scalar(select(func.count()).select_from(Tag)) == 4
+    assert db.scalar(select(func.count()).select_from(Tag)) == 6
 
 
 def test_process_item_happy_path(db, person_source, fake_llm):
